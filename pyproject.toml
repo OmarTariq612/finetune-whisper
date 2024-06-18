@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "finetune-whisper"
+version = "0.0.1"
+description = "a library the makes finetuning whisper an easy process"
+authors = ["OmarTariq612 <az2339913@gmail.com>"]
+readme = "README.md"
+license = "MIT"
+package-mode = true
+
+[tool.poetry.dependencies]
+python = "^3.10"
+torch = "^2.3.1"
+torchaudio = "^2.3.1"
+numpy = "^2.0.0"
+openai-whisper = "^20231117"
+lightning = "^2.3.0"
+evaluate = "^0.4.2"
+jiwer = "^3.0.4"
+transformers = "^4.41.2"
+
+[tool.poetry.scripts]
+main = "finetune_whisper.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
