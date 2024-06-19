@@ -273,7 +273,7 @@ class OpenAIWhisperTrainingStrategy:
 
         self.skip_exceeding_30_secs = skip_exceeding_30_secs
 
-        self.allowed_special = set() if without_timestamps else "all"
+        self.without_timestamps = without_timestamps
 
         self.device = device
         self.model = load_model(name, device)
@@ -456,9 +456,14 @@ class OpenAIWhisperTrainingStrategy:
             audio = whisper.pad_or_trim(flattened_audio)
             mel = whisper.log_mel_spectrogram(audio)
 
-            text = [*self.tokenizer.sot_sequence] + self.tokenizer.encode(
-                sample.text, allowed_special=self.allowed_special
-            )
+            if self.without_timestamps:
+                text = [
+                    *self.tokenizer.sot_sequence_including_notimestamps
+                ] + self.tokenizer.encode(sample.text)
+            else:
+                text = [*self.tokenizer.sot_sequence] + self.tokenizer.encode(
+                    sample.text, allowed_special="all"
+                )
 
             labels = text[1:] + [self.tokenizer.eot]
 
